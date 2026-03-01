@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Deposit Insight - Intelligent Investment Prediction{% endblock %}</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4.1">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <span>Deposit Insight</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="{% if request.path == '/' %}active{% endif %}">Prediction Engine</a>
+                <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+                <a href="/performance" class="{% if request.path == '/performance' %}active{% endif %}">Performance</a>
+                <a href="/about" class="{% if request.path == '/about' %}active{% endif %}">Methodology</a>
+            </div>
+            <a href="/#predict" class="btn-primary"
+                style="padding: 0.6rem 1.5rem; font-size: 0.95rem; margin-left: 1rem;">
+                New Analysis
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col" style="max-width: 500px; text-align: left;">
+                    <a href="/" class="footer-logo">Deposit <span>Insight</span></a>
+                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
+                        Advanced machine learning algorithms dedicated to optimizing banking term deposit conversions.
+                        Delivering enterprise-grade predictive intelligence.
+                    </p>
+                </div>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; 2026 Deposit Insight. All rights reserved. Powered by Scikit-Learn & Flask.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Simple script to add 'scrolled' class to navbar on scroll
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <!-- Custom Dropdown Initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.select-wrapper select').forEach(nativeSelect => {
+                // Hide native select visually
+                nativeSelect.classList.add('native-hidden');
+                const wrapper = nativeSelect.parentElement;
+
+                // Create custom trigger
+                const trigger = document.createElement('div');
+                trigger.className = 'custom-select-trigger';
+
+                // Set initial text based on selected option or placeholder
+                const selectedOption = nativeSelect.options[nativeSelect.selectedIndex] || nativeSelect.options[0];
+                const initialText = selectedOption ? selectedOption.text : 'Select...';
+                trigger.innerHTML = `<span>${initialText}</span> <i class="fa-solid fa-chevron-down"></i>`;
+
+                // Create custom options panel
+                const panel = document.createElement('div');
+                panel.className = 'custom-options-panel';
+
+                Array.from(nativeSelect.options).forEach((opt, index) => {
+                    // Skip the placeholder "Select..." option if it's implicitly disabled/empty value
+                    if (opt.disabled || opt.value === "") return;
+
+                    const customOpt = document.createElement('div');
+                    customOpt.className = 'custom-option';
+                    if (opt.selected) customOpt.classList.add('selected');
+                    customOpt.textContent = opt.text;
+
+                    customOpt.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        // Update native select
+                        nativeSelect.selectedIndex = index;
+                        nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+
+                        // Update trigger text
+                        trigger.querySelector('span').textContent = opt.text;
+
+                        // Update selected visual state
+                        panel.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+                        customOpt.classList.add('selected');
+
+                        // Clear error status if standard validation was triggered
+                        nativeSelect.classList.remove('input-error');
+
+                        closeAllSelects();
+                    });
+                    panel.appendChild(customOpt);
+                });
+
+                // Toggle open/close
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = panel.classList.contains('open');
+                    closeAllSelects();
+                    if (!isOpen) {
+                        panel.classList.add('open');
+                        trigger.classList.add('open');
+                    }
+                });
+
+                // Append logic
+                wrapper.appendChild(trigger);
+                wrapper.appendChild(panel);
+            });
+
+            function closeAllSelects() {
+                document.querySelectorAll('.custom-options-panel.open, .custom-select-trigger.open').forEach(el => {
+                    el.classList.remove('open');
+                });
+            }
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', closeAllSelects);
+        });
+    </script>
+</body>
+
+</html>

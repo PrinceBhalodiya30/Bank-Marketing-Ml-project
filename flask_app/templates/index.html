@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Engine - Deposit Insight{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-content">
+        <div class="badge">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> AI-Powered Financial Intelligence
+        </div>
+        <h1>Deposit Insight <br><span class="text-gradient">Prediction Engine</span></h1>
+        <p>Leverage our advanced Random Forest algorithm to analyze customer data points and predict term deposit
+            subscription probability with exceptional precision.</p>
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <a href="#predict" class="btn-primary" style="padding: 1rem 2.5rem; font-size: 1.125rem;">
+                Start Analysis <i class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i>
+            </a>
+            <a href="/about" class="btn-secondary" style="padding: 1rem 2.5rem; font-size: 1.125rem;">
+                Methodology
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="container features">
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3>Algorithmic Precision</h3>
+        <p>Utilizing a tuned Random Forest Classifier to identify complex patterns in demographic and financial data.
+        </p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h3>Instant Processing</h3>
+        <p>Analyze 16+ distinct client variables in microseconds to generate actionable investment insights.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3>Enterprise Grade</h3>
+        <p>Built with security and privacy at the core, ensuring your client data remains local and protected.</p>
+    </div>
+</section>
+
+<!-- Prediction Form Section -->
+<section id="predict" class="prediction-section">
+    <div class="section-header">
+        <h2>Deposit Insight Interface</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Input client parameters below to generate
+            a real-time subscription probability through our predictive model.</p>
+    </div>
+
+    <div class="form-wrapper">
+        <div class="wizard-progress">
+            <div class="progress-bar-bg">
+                <div class="progress-fill" id="progress-fill" style="width: 33.33%;"></div>
+            </div>
+            <div class="step-indicators">
+                <div class="step-indicator active" data-step="1">1</div>
+                <div class="step-indicator" data-step="2">2</div>
+                <div class="step-indicator" data-step="3">3</div>
+            </div>
+        </div>
+
+        <form action="/submit" method="POST" id="prediction-form">
+            <!-- Step 1: Client Profile -->
+            <div class="form-step active" id="step-1">
+                <div class="group-title">
+                    <i class="fa-regular fa-id-card"></i> Client Profile
+                </div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" class="form-control" required placeholder="e.g. 35">
+                    </div>
+                    <div class="input-group">
+                        <label for="job">Job Type</label>
+                        <div class="select-wrapper">
+                            <select id="job" name="job" class="form-control" required>
+                                <option value="" disabled selected>Select Job Role...</option>
+                                <option value="management">Management</option>
+                                <option value="technician">Technician</option>
+                                <option value="entrepreneur">Entrepreneur</option>
+                                <option value="blue-collar">Blue Collar</option>
+                                <option value="admin.">Admin</option>
+                                <option value="services">Services</option>
+                                <option value="retired">Retired</option>
+                                <option value="self-employed">Self-Employed</option>
+                                <option value="unemployed">Unemployed</option>
+                                <option value="housemaid">Housemaid</option>
+                                <option value="student">Student</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="marital">Marital Status</label>
+                        <div class="select-wrapper">
+                            <select id="marital" name="marital" class="form-control" required>
+                                <option value="" disabled selected>Select Status...</option>
+                                <option value="married">Married</option>
+                                <option value="single">Single</option>
+                                <option value="divorced">Divorced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="education">Education Level</label>
+                        <div class="select-wrapper">
+                            <select id="education" name="education" class="form-control" required>
+                                <option value="" disabled selected>Select Education...</option>
+                                <option value="secondary">Secondary</option>
+                                <option value="tertiary">Tertiary</option>
+                                <option value="primary">Primary</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="wizard-actions" style="grid-column: 1 / -1; margin-top: 1rem;">
+                        <button type="button" class="btn-primary btn-next" onclick="nextStep(1)">Next Step <i
+                                class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Financial Status -->
+            <div class="form-step" id="step-2">
+                <div class="group-title">
+                    <i class="fa-solid fa-sack-dollar"></i> Financial Status
+                </div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="balance">Yearly Balance (€)</label>
+                        <input type="number" id="balance" name="balance" class="form-control" required
+                            placeholder="e.g. 1500">
+                    </div>
+                    <div class="input-group">
+                        <label for="housing">Housing Loan</label>
+                        <div class="select-wrapper">
+                            <select id="housing" name="housing" class="form-control" required>
+                                <option value="" disabled selected>Select Option...</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="loan">Personal Loan</label>
+                        <div class="select-wrapper">
+                            <select id="loan" name="loan" class="form-control" required>
+                                <option value="" disabled selected>Select Option...</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="default">Credit Default</label>
+                        <div class="select-wrapper">
+                            <select id="default" name="default" class="form-control" required>
+                                <option value="" disabled selected>Select Option...</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="wizard-actions"
+                        style="justify-content: space-between; grid-column: 1 / -1; margin-top: 1rem;">
+                        <button type="button" class="btn-secondary btn-prev" onclick="prevStep(2)"><i
+                                class="fa-solid fa-arrow-left" style="margin-right: 0.5rem;"></i> Previous</button>
+                        <button type="button" class="btn-primary btn-next" onclick="nextStep(2)">Next Step <i
+                                class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Campaign Info -->
+            <div class="form-step" id="step-3">
+                <div class="group-title">
+                    <i class="fa-solid fa-bullhorn"></i> Campaign Details
+                </div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="contact">Contact Method</label>
+                        <div class="select-wrapper">
+                            <select id="contact" name="contact" class="form-control" required>
+                                <option value="" disabled selected>Select Method...</option>
+                                <option value="cellular">Cellular</option>
+                                <option value="telephone">Telephone</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="month">Month</label>
+                        <div class="select-wrapper">
+                            <select id="month" name="month" class="form-control" required>
+                                <option value="" disabled selected>Select Month...</option>
+                                <option value="jan">Jan</option>
+                                <option value="feb">Feb</option>
+                                <option value="mar">Mar</option>
+                                <option value="apr">Apr</option>
+                                <option value="may">May</option>
+                                <option value="jun">Jun</option>
+                                <option value="jul">Jul</option>
+                                <option value="aug">Aug</option>
+                                <option value="sep">Sep</option>
+                                <option value="oct">Oct</option>
+                                <option value="nov">Nov</option>
+                                <option value="dec">Dec</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="day">Day of Month</label>
+                        <input type="number" id="day" name="day" class="form-control" min="1" max="31" required
+                            placeholder="1-31">
+                    </div>
+                    <div class="input-group">
+                        <label for="duration">Last Contact Duration (sec)</label>
+                        <input type="number" id="duration" name="duration" class="form-control" required
+                            placeholder="e.g. 180">
+                    </div>
+                    <div class="input-group">
+                        <label for="campaign">Number of Contacts During Campaign</label>
+                        <input type="number" id="campaign" name="campaign" class="form-control" required min="1"
+                            placeholder="e.g. 1">
+                    </div>
+                    <div class="input-group">
+                        <label for="pdays">Days Since Last Campaign Contact (-1 if never)</label>
+                        <input type="number" id="pdays" name="pdays" class="form-control" required
+                            placeholder="e.g. -1 (if never)">
+                    </div>
+                    <div class="input-group">
+                        <label for="previous">Previous Campaign Contacts</label>
+                        <input type="number" id="previous" name="previous" class="form-control" required
+                            placeholder="e.g. 0">
+                    </div>
+                    <div class="input-group">
+                        <label for="poutcome">Previous Campaign Outcome</label>
+                        <div class="select-wrapper">
+                            <select id="poutcome" name="poutcome" class="form-control" required>
+                                <option value="" disabled selected>Select Outcome...</option>
+                                <option value="unknown">Unknown</option>
+                                <option value="failure">Failure</option>
+                                <option value="other">Other</option>
+                                <option value="success">Success</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wizard-actions"
+                    style="justify-content: space-between; align-items: center; margin-top: 3rem; border-top: 1px solid var(--border-light); padding-top: 2rem;">
+                    <button type="button" class="btn-secondary btn-prev" onclick="prevStep(3)"><i
+                            class="fa-solid fa-arrow-left" style="margin-right: 0.5rem;"></i> Previous</button>
+                    <button type="submit" class="submit-btn"
+                        style="margin-top: 0; width: auto; padding: 1rem 2.5rem;">Run Predictive Analysis</button>
+                </div>
+                <p style="text-align: right; margin-top: 1rem; color: var(--text-light); font-size: 0.85rem;">
+                    <i class="fa-solid fa-lock" style="margin-right: 0.3rem;"></i> 256-bit Encrypted Enterprise Analysis
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function nextStep(currentStep) {
+        // Basic HTML5 validation for the current step
+        const stepContainer = document.getElementById(`step-${currentStep}`);
+        const inputs = stepContainer.querySelectorAll('input[required], select[required]');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            // Remove previous error state
+            input.classList.remove('input-error');
+
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                isValid = false;
+
+                // Add error animation and visual state
+                input.classList.add('input-error');
+
+                // Remove the class after animation completes so it can trigger again
+                setTimeout(() => {
+                    input.classList.remove('input-error');
+                    // Retain basic visual red border using a different class if needed, or rely on :invalid pseudo-class
+                }, 400);
+            }
+        });
+
+        if (!isValid) return;
+
+        // Hide current step, show next
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`step-${currentStep + 1}`).classList.add('active');
+        updateProgress(currentStep + 1);
+    }
+
+    function prevStep(currentStep) {
+        // Hide current step, show prev
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`step-${currentStep - 1}`).classList.add('active');
+        updateProgress(currentStep - 1);
+    }
+
+    function updateProgress(step) {
+        const fill = document.getElementById('progress-fill');
+        fill.style.width = `${(step / 3) * 100}%`;
+
+        // Update indicators
+        document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+            if (index < step) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+        });
+
+        // Scroll to top of form smoothly
+        const yOffset = -100; // Account for fixed navbar
+        const element = document.getElementById('predict');
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+</script>
+{% endblock %}

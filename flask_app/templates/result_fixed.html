@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Result - Deposit Insight{% endblock %}
+
+{% block content %}
+<div class="container result-container" style="padding: 2rem 0 6rem;">
+    <div class="result-card" style="max-width: 800px;">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+            <!-- Left Side: Probability Chart -->
+            <div style="text-align: center; position: relative;">
+                <div
+                    style="position: relative; width: 250px; height: 250px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                    <canvas id="probabilityChart"></canvas>
+                    <div
+                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
+                        <span
+                            style="font-size: 3.5rem; font-weight: 800; font-family: var(--font-heading); color: var(--text-main); line-height: 1;">{{
+                            probability }}<span style="font-size: 1.5rem;">%</span></span>
+                        <span
+                            style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem;">Confidence
+                            Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Details -->
+            <div style="text-align: left;">
+                <div class="badge"
+                    style="background: {% if alert_class == 'success' %}rgba(16, 185, 129, 0.1){% else %}rgba(239, 68, 68, 0.1){% endif %}; color: {% if alert_class == 'success' %}var(--success){% else %}var(--danger){% endif %}; border-color: {% if alert_class == 'success' %}rgba(16, 185, 129, 0.2){% else %}rgba(239, 68, 68, 0.2){% endif %}; box-shadow: 0 0 15px {% if alert_class == 'success' %}rgba(16, 185, 129, 0.1){% else %}rgba(239, 68, 68, 0.1){% endif %};">
+                    {% if alert_class == 'success' %}
+                    <i class="fa-solid fa-check-circle" style="text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);"></i>
+                    Highly Likely
+                    {% else %}
+                    <i class="fa-solid fa-xmark-circle" style="text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></i> Needs
+                    Nurturing
+                    {% endif %}
+                </div>
+
+                <h1 style="font-size: 2.25rem; margin-bottom: 1rem; color: var(--text-main);">{{ prediction }}</h1>
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;">{{
+                    prediction_text }}</p>
+
+                <div class="data-summary" style="margin-bottom: 0;">
+                    <h5
+                        style="margin-bottom: 1rem; color: var(--text-main); font-family: var(--font-heading); font-size: 1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">
+                        Client Snapshot</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <span
+                                style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 600;">Job</span>
+                            <span style="font-weight: 600; color: var(--text-main);">{{ data.job|capitalize }}</span>
+                        </div>
+                        <div>
+                            <span
+                                style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 600;">Balance</span>
+                            <span style="font-weight: 600; color: var(--text-main);">€{{ data.balance }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-actions"
+            style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-glass);">
+            <a href="/dashboard" class="btn-secondary" style="padding: 1rem 2.5rem;">
+                <i class="fa-solid fa-list-ul" style="margin-right: 0.5rem;"></i> View History
+            </a>
+            <a href="/#predict" class="btn-primary" style="padding: 1rem 2.5rem;">
+                <i class="fa-solid fa-rotate-right" style="margin-right: 0.5rem;"></i> New Analysis
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('probabilityChart').getContext('2d');
+        const probability = {{ probability }};
+    const alertClass = '{{ alert_class }}';
+
+    let primaryColor = alertClass === 'success' ? '#10b981' : '#ef4444'; // Emerald for success, Red for danger
+    let gradientColor = alertClass === 'success' ? '#34d399' : '#f87171';
+
+    // Create gradient
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, gradientColor);
+    gradient.addColorStop(1, primaryColor);
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [probability, 100 - probability],
+                backgroundColor: [
+                    gradient,
+                    'rgba(255, 255, 255, 0.05)' // Very dark translucent for empty space
+                ],
+                borderWidth: 0,
+                borderRadius: [10, 0], // Rounded ends
+                cutout: '80%'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 1500,
+                easing: 'easeOutQuart'
+            },
+            plugins: {
+                tooltip: { enabled: false },
+                legend: { display: false }
+            }
+        }
+    });
+    });
+</script>
+{% endblock %}

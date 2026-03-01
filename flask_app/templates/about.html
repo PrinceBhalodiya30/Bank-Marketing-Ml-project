@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Methodology - Deposit Insight{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero" style="padding: 4rem 1.5rem 2rem;">
+    <div class="container hero-content">
+        <div class="badge">
+            <i class="fa-solid fa-layer-group"></i> Transparent AI Architecture
+        </div>
+        <h1>Our Prediction <br><span class="text-gradient">Methodology</span></h1>
+        <p>A deep dive into the algorithmic precision powering Deposit Insight's investment forecasting engine.</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container" style="margin-bottom: 6rem;">
+    <div class="feature-card" style="max-width: 900px; margin: 0 auto; padding: 4rem;">
+
+        <!-- Algorithm Section -->
+        <div style="margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border-light);">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div
+                    style="width: 3.5rem; height: 3.5rem; background: rgba(34, 211, 238, 0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.75rem; color: var(--primary); font-size: 1.5rem; border: 1px solid rgba(34, 211, 238, 0.2);">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <h2 style="margin: 0; font-size: 2rem;">Random Forest Ensemble</h2>
+            </div>
+            <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">
+                Deposit Insight utilizes a <strong>Random Forest Classifier</strong>, an industry-standard ensemble
+                learning method. By constructing a multitude of decision trees during training and outputting the
+                consensus class, we eliminate the common pitfalls of overfitting associated with single decision trees.
+                This results in a robust, generalized model capable of accurate predictions on unseen market data.
+            </p>
+        </div>
+
+        <!-- Data Points Section -->
+        <h3 style="font-size: 1.5rem; margin-bottom: 2rem; text-align: center;">Analyzed Parameters</h3>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+            <!-- Demographics -->
+            <div
+                style="background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); box-shadow: var(--shadow-glass);">
+                <h4
+                    style="color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-regular fa-user" style="color: var(--primary);"></i> Access Profile
+                </h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--text-muted);">
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Age
+                        Demographics</li>
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i>
+                        Professional Sector</li>
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Marital
+                        Status</li>
+                    <li style="display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-check"
+                            style="color: var(--success); font-size: 0.9rem;"></i> Education Tier</li>
+                </ul>
+            </div>
+
+            <!-- Financials -->
+            <div
+                style="background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); box-shadow: var(--shadow-glass);">
+                <h4
+                    style="color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-euro-sign" style="color: var(--primary);"></i> Financial Health
+                </h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--text-muted);">
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Annual
+                        Balance</li>
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Credit
+                        History</li>
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Housing
+                        Loans</li>
+                    <li style="display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-check"
+                            style="color: var(--success); font-size: 0.9rem;"></i> Personal Loans</li>
+                </ul>
+            </div>
+
+            <!-- Engagement -->
+            <div
+                style="background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); box-shadow: var(--shadow-glass);">
+                <h4
+                    style="color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-comments" style="color: var(--primary);"></i> Engagement
+                </h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--text-muted);">
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Contact
+                        Channel</li>
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Call
+                        Duration</li>
+                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fa-solid fa-check" style="color: var(--success); font-size: 0.9rem;"></i> Campaign
+                        Frequency</li>
+                    <li style="display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-check"
+                            style="color: var(--success); font-size: 0.9rem;"></i> Past Outcomes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

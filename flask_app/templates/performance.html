@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Algorithm Performance - Deposit Insight{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" style="padding: 4rem 1.5rem 2rem;">
+    <div class="container hero-content">
+        <div class="badge">
+            <i class="fa-solid fa-chart-line"></i> Performance Analytics
+        </div>
+        <h1>Deposit Insight <br><span class="text-gradient">Analytics</span></h1>
+        <p>A detailed quantitative diagnostic of the machine learning models evaluated for our prediction engine.</p>
+    </div>
+</section>
+
+<!-- Algorithm Performance Section -->
+<section class="container algorithm-performance" style="margin-bottom: 6rem;">
+    <!-- Charts Sections -->
+    <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+
+        <!-- Accuracy Chart -->
+        <div class="feature-card" style="padding: 2rem; background: rgba(30, 41, 59, 0.4);">
+            <div
+                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem;">
+                <div
+                    style="width: 2.5rem; height: 2.5rem; background: rgba(79, 70, 229, 0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; color: var(--primary);">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <h3 style="margin: 0; font-size: 1.25rem;">Accuracy</h3>
+            </div>
+            <div style="height: 250px; width: 100%;">
+                <canvas id="accuracyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- F1-Score Chart -->
+        <div class="feature-card" style="padding: 2rem; background: rgba(30, 41, 59, 0.4);">
+            <div
+                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem;">
+                <div
+                    style="width: 2.5rem; height: 2.5rem; background: rgba(14, 165, 233, 0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; color: var(--accent);">
+                    <i class="fa-solid fa-balance-scale"></i>
+                </div>
+                <h3 style="margin: 0; font-size: 1.25rem;">F1-Score</h3>
+            </div>
+            <div style="height: 250px; width: 100%;">
+                <canvas id="f1Chart"></canvas>
+            </div>
+        </div>
+
+        <!-- ROC-AUC Chart -->
+        <div class="feature-card" style="padding: 2rem; background: rgba(30, 41, 59, 0.4);">
+            <div
+                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem;">
+                <div
+                    style="width: 2.5rem; height: 2.5rem; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; color: var(--success);">
+                    <i class="fa-solid fa-chart-area"></i>
+                </div>
+                <h3 style="margin: 0; font-size: 1.25rem;">ROC-AUC</h3>
+            </div>
+            <div style="height: 250px; width: 100%;">
+                <canvas id="rocChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="section-header" style="margin-bottom: 2rem; text-align: left;">
+        <h2>Detailed Specifications</h2>
+        <p style="color: var(--text-muted);">Comparing the core architecture configurations and resulting metrics.</p>
+    </div>
+
+    <div class="performance-grid">
+        <!-- Random Forest (Best) -->
+        <div class="performance-card best-model">
+            <div class="model-badge">Best Model</div>
+            <div class="model-header">
+                <h3>Random Forest</h3>
+                <i class="fa-solid fa-ranking-star" style="color: var(--warning); font-size: 1.25rem;"></i>
+            </div>
+            <div class="score-display">
+                <span class="score-value">90.10%</span>
+                <span class="score-label">Accuracy</span>
+            </div>
+            <p class="model-desc">Optimal model utilized in our prediction engine, featuring advanced hyperparameter
+                tuning (max_depth: 20, estimators: 100).</p>
+        </div>
+
+        <!-- SVM -->
+        <div class="performance-card">
+            <div class="model-header">
+                <h3>Support Vector Machine</h3>
+            </div>
+            <div class="score-display">
+                <span class="score-value">89.12%</span>
+                <span class="score-label">Accuracy</span>
+            </div>
+            <p class="model-desc">Strong performance with robust margin classification, serving as our primary baseline
+                challenger.</p>
+        </div>
+
+        <!-- Logistic Regression -->
+        <div class="performance-card">
+            <div class="model-header">
+                <h3>Logistic Regression</h3>
+            </div>
+            <div class="score-display">
+                <span class="score-value">88.81%</span>
+                <span class="score-label">Accuracy</span>
+            </div>
+            <p class="model-desc">Traditional statistical model providing excellent interpretability for baseline
+                feature importance.</p>
+        </div>
+
+        <!-- Decision Tree -->
+        <div class="performance-card">
+            <div class="model-header">
+                <h3>Decision Tree</h3>
+            </div>
+            <div class="score-display">
+                <span class="score-value">87.10%</span>
+                <span class="score-label">Accuracy</span>
+            </div>
+            <p class="model-desc">Fundamental architectural component forming the basis of our primary Random Forest
+                ensemble.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Chart.js configuration -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dark theme specific styling defaults
+        Chart.defaults.color = '#94a3b8'; // text-muted
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        const models = ['Random Forest', 'SVM', 'Logistic Reg', 'Decision Tree'];
+        const bgColors = [
+            'rgba(34, 211, 238, 0.85)', // primary (Cyan)
+            'rgba(168, 85, 247, 0.85)', // accent (Purple)
+            'rgba(148, 163, 184, 0.85)', // slate
+            'rgba(16, 185, 129, 0.85)'  // emerald
+        ];
+        const borderColors = ['#22d3ee', '#a855f7', '#94a3b8', '#10b981'];
+
+        const accData = [90.1, 89.1, 88.8, 87.1];
+        const f1Data = [87.8, 85.7, 85.0, 83.7];
+        const rocData = [92.4, 90.1, 89.5, 86.5];
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                    titleColor: '#f8fafc',
+                    bodyColor: '#94a3b8',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    titleFont: {
+                        family: "'Plus Jakarta Sans', sans-serif",
+                        weight: '700'
+                    },
+                    bodyFont: {
+                        family: "'Inter', sans-serif",
+                        size: 14,
+                        weight: '600'
+                    },
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+                    callbacks: {
+                        label: function (context) { return context.parsed.y + '%'; }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 80,
+                    max: 95,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { family: "'Inter', sans-serif", weight: '500', size: 11 }
+                    }
+                }
+            }
+        };
+
+        // Accuracy Chart
+        new Chart(document.getElementById('accuracyChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: models,
+                datasets: [{ data: accData, backgroundColor: bgColors, borderColor: borderColors, borderWidth: 1, borderRadius: 6 }]
+            },
+            options: commonOptions
+        });
+
+        // F1-Score Chart
+        new Chart(document.getElementById('f1Chart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: models,
+                datasets: [{ data: f1Data, backgroundColor: bgColors, borderColor: borderColors, borderWidth: 1, borderRadius: 6 }]
+            },
+            options: commonOptions
+        });
+
+        // ROC-AUC Chart
+        new Chart(document.getElementById('rocChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: models,
+                datasets: [{ data: rocData, backgroundColor: bgColors, borderColor: borderColors, borderWidth: 1, borderRadius: 6 }]
+            },
+            options: commonOptions
+        });
+    });
+</script>
+{% endblock %}
