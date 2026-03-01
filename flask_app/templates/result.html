@@ -74,50 +74,52 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="jinja-data" data-probability="{{ probability }}" data-alert-class="{{ alert_class }}" style="display: none;">
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('probabilityChart').getContext('2d');
-        const probability = {{ probability }
-    };
-    const alertClass = '{{ alert_class }}';
+        const jinjaData = document.getElementById('jinja-data');
+        const probability = parseFloat(jinjaData.dataset.probability);
+        const alertClass = jinjaData.dataset.alertClass;
 
-    let primaryColor = alertClass === 'success' ? '#10b981' : '#ef4444'; // Emerald for success, Red for danger
-    let gradientColor = alertClass === 'success' ? '#34d399' : '#f87171';
+        let primaryColor = alertClass === 'success' ? '#10b981' : '#ef4444'; // Emerald for success, Red for danger
+        let gradientColor = alertClass === 'success' ? '#34d399' : '#f87171';
 
-    // Create gradient
-    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, gradientColor);
-    gradient.addColorStop(1, primaryColor);
+        // Create gradient
+        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, gradientColor);
+        gradient.addColorStop(1, primaryColor);
 
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                data: [probability, 100 - probability],
-                backgroundColor: [
-                    gradient,
-                    'rgba(255, 255, 255, 0.05)' // Very dark translucent for empty space
-                ],
-                borderWidth: 0,
-                borderRadius: [10, 0], // Rounded ends
-                cutout: '80%'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                animateScale: true,
-                animateRotate: true,
-                duration: 1500,
-                easing: 'easeOutQuart'
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [probability, 100 - probability],
+                    backgroundColor: [
+                        gradient,
+                        'rgba(255, 255, 255, 0.05)' // Very dark translucent for empty space
+                    ],
+                    borderWidth: 0,
+                    borderRadius: [10, 0], // Rounded ends
+                    cutout: '80%'
+                }]
             },
-            plugins: {
-                tooltip: { enabled: false },
-                legend: { display: false }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    tooltip: { enabled: false },
+                    legend: { display: false }
+                }
             }
-        }
-    });
+        });
     });
 </script>
 {% endblock %}
