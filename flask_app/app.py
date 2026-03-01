@@ -118,14 +118,17 @@ def submit():
                     prediction_text = f"Analysis indicates only a {probability_pct}% likelihood of term deposit subscription. Recommended Action: Nurture with educational content."
                     alert_class = "danger"
                 
-                # Save to database
-                with sqlite3.connect(DB_PATH) as conn:
-                    cursor = conn.cursor()
-                    cursor.execute('''
-                        INSERT INTO predictions (timestamp, age, job, balance, prediction, probability)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    ''', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), data['age'], data['job'], data['balance'], prediction, probability_pct))
-                    conn.commit()
+                try:
+                    # Save to database
+                    with sqlite3.connect(DB_PATH, timeout=5) as conn:
+                        cursor = conn.cursor()
+                        cursor.execute('''
+                            INSERT INTO predictions (timestamp, age, job, balance, prediction, probability)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                        ''', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), data['age'], data['job'], data['balance'], prediction, probability_pct))
+                        conn.commit()
+                except sqlite3.Error as db_err:
+                    print(f"Warning: Could not save to database: {db_err}")
             else:
                 prediction_text = "Model not loaded."
                 alert_class = "warning"
