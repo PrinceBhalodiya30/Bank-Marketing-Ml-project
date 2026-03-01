@@ -65,7 +65,9 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('base.html', content="<div class='container' style='text-align:center; padding:5rem;'><h1 style='color:var(--danger);'>500</h1><p>Internal System Error.</p><a href='/' class='btn-primary'>Return Home</a></div>"), 500
+    import traceback
+    error_trace = getattr(e, 'original_exception', e)
+    return render_template('base.html', content=f"<div class='container' style='text-align:left; padding:5rem;'><h1 style='color:var(--danger);'>500 Internal Error</h1><p>{str(error_trace)}</p><a href='/' class='btn-primary'>Return Home</a></div>"), 500
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -128,8 +130,10 @@ def submit():
                 prediction_text = "Model not loaded."
                 alert_class = "warning"
 
-        except ValueError as e:
-            return render_template('base.html', content=f"<div class='container' style='text-align:center; padding:5rem;'><h1 style='color:var(--warning);'>Input Error</h1><p>Please ensure all fields are filled correctly.<br><small>{e}</small></p><a href='/' class='btn-primary'>Try Again</a></div>"), 400
+        except Exception as e:
+            import traceback
+            error_trace = traceback.format_exc()
+            return render_template('base.html', content=f"<div class='container' style='text-align:left; padding:5rem;'><h1 style='color:var(--danger);'>Exception Block Triggered</h1><p><strong>{type(e).__name__}</strong>: {str(e)}</p><pre style='color:var(--text-main); background:rgba(0,0,0,0.5); padding:2rem; border-radius:1rem; overflow-x:auto; text-align:left;'>{error_trace}</pre><a href='/' class='btn-primary' style='margin-top:2rem;'>Return Home</a></div>"), 500
 
         return render_template('result_fixed.html', data=data, prediction=prediction, prediction_text=prediction_text, alert_class=alert_class, probability=probability_pct)
 
