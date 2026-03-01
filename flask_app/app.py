@@ -138,7 +138,7 @@ def submit():
             error_trace = traceback.format_exc()
             return render_template('base.html', content=f"<div class='container' style='text-align:left; padding:5rem;'><h1 style='color:var(--danger);'>Exception Block Triggered</h1><p><strong>{type(e).__name__}</strong>: {str(e)}</p><pre style='color:var(--text-main); background:rgba(0,0,0,0.5); padding:2rem; border-radius:1rem; overflow-x:auto; text-align:left;'>{error_trace}</pre><a href='/' class='btn-primary' style='margin-top:2rem;'>Return Home</a></div>"), 500
 
-        return render_template('result_fixed.html', data=data, prediction=prediction, prediction_text=prediction_text, alert_class=alert_class, probability=probability_pct)
+        return render_template('result.html', data=data, prediction=prediction, prediction_text=prediction_text, alert_class=alert_class, probability=probability_pct)
 
 if __name__ == '__main__':
     app.run(debug=True)
